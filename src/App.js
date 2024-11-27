@@ -12,10 +12,27 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import MyNav from "./components/MyNav"
 import MyFooter from "./components/MyFooter"
 import Welcome from "./components/Welcome"
-import AllTheBooks from "./components/AllTheBooks"
+import BookList from "./components/BookList"
 import MyModal from "./components/MyModal"
+import MySearch from "./components/MySearch"
 
+import fantasyBooks from './assets/fantasy.json'
+import historyBooks from './assets/history.json'
+import horrorBooks from './assets/horror.json'
+import romanceBooks from './assets/romance.json'
+import scifiBooks from './assets/scifi.json'
 
+export const booksArray = [
+  ...fantasyBooks,
+  ...historyBooks,
+  ...horrorBooks,
+  ...romanceBooks,
+  ...scifiBooks,
+].filter(
+  (obj1, i, arr) => arr.findIndex((obj2) => obj2.asin === obj1.asin) === i
+)
+// Devo fare un filtro che estragga il primo ASIN tra i duplicati perché ci sono
+// dei libri presenti in più categorie
 
 document.getElementsByTagName('html')[0].classList.add('h-100')
 document.getElementsByTagName('body')[0].classList.add('h-100')
@@ -34,7 +51,9 @@ class App extends Component {
       img: '',
       price: 0,
       category: '',
-    }
+    },
+    searchTerms: '',
+    selectedBooks: [],
   }
 
   changeFilter = (label) => {
@@ -44,6 +63,7 @@ class App extends Component {
 
   setModalShow = (state, content) => {
     this.setState({
+      ...this.state,
       modalShow: state,
       modalContent: content,
     })
@@ -51,16 +71,38 @@ class App extends Component {
     console.log(`content è: ${JSON.stringify(content)}`) // Per verificare
   }
 
+  setSearchTerms = (terms) => {
+    this.setState({
+      ...this.state,
+      searchTerms: terms
+    })
+    console.log(`setSearchTerms searchTerms è : ${terms}`) // Per verificare
+  }
+
+  setSelectedBooks = (asin) => {
+    this.setState((prevState) => ({ // prevState è lo stato precedente fornito direttamente da React
+      selectedBooks: prevState.selectedBooks.includes(asin)
+        ? prevState.selectedBooks.filter((book) => book !== asin) // Rimuovi
+        : [...prevState.selectedBooks, asin] // Aggiungi
+    }));
+    console.log(`selectedBooks è: ${this.state.selectedBooks}`) // Per verificare
+  };
+
   render() {
     return (
       <div className="d-flex flex-column h-100">
+
         <header className="d-flex flex-column flex-shrink-0">
           <MyNav title="BookShop" changeFilter={this.changeFilter} fluid={true} />
           <Welcome />
         </header>
-        <main className="container d-flex flex-column flex-grow-1">
 
-          <h1 className='mt-5 text-capitalize'>Categoria {this.state.bookFilter}</h1>
+        <main className="container d-flex flex-column flex-grow-1">
+          {this.state.searchTerms !== ''
+            ? <h1 className='mt-5 text-capitalize'>Risultati per "{this.state.searchTerms}"</h1>
+            : <h1 className='mt-5 text-capitalize'>Categoria {this.state.bookFilter}</h1>
+          }
+          <MySearch setSearchTerms={this.setSearchTerms} searchTerms={this.state.searchTerms}></MySearch>
 
           {this.state.modalShow &&
             <MyModal
@@ -69,12 +111,22 @@ class App extends Component {
               onHide={() => this.setModalShow(false, {})}
             />}
 
-          <AllTheBooks category={this.state.bookFilter} setModalShow={this.setModalShow} />
+          <BookList
+            booksArray={booksArray}
+            category={this.state.bookFilter}
+            searchTerms={this.state.searchTerms}
+            setSearchTerms={this.setSearchTerms}
+            setModalShow={this.setModalShow}
+            selectedBooks={this.state.selectedBooks}
+            setSelectedBooks={this.setSelectedBooks}
+          />
 
         </main>
+
         <footer className="d-flex flex-column flex-shrink-0">
           <MyFooter />
         </footer>
+
       </div>
     );
   }

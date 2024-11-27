@@ -17,7 +17,14 @@ function MyModal(props) {
       </Modal.Header>
       <Modal.Body>
         <h4 className='mx-5 px-5 mt-2 mb-5'> {props.modalContent.title}</h4>
-        <Row className='justify-content-center row-cols-4'>
+        <Row className='justify-content-center row-cols-3'>
+          <Col className='d-flex justify-content-start'>
+            <img
+              className='img-fluid shadow-lg bg-body-tertiary rounded'
+              src={props.modalContent.img}
+              alt={`Copertina di ${props.modalContent.title}`}
+            />
+          </Col>
           <Col className='d-flex flex-column'>
             <div className='d-flex align-items-center'>
               <FontAwesomeIcon className='me-2' icon='fa-solid fa-list' />
@@ -33,13 +40,6 @@ function MyModal(props) {
               <FontAwesomeIcon className='me-2' icon='fa-solid fa-euro-sign' />
               {props.modalContent.price}
             </div>
-          </Col>
-          <Col className='d-flex justify-content-start'>
-            <img
-              className='img-fluid shadow-lg bg-body-tertiary rounded'
-              src={props.modalContent.img}
-              alt={`Copertina di ${props.modalContent.title}`}
-            />
           </Col>
         </Row>
       </Modal.Body>

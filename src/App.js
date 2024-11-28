@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Component, useState } from "react";
+import { Component } from "react";
 
 // import the library
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -52,6 +52,7 @@ class App extends Component {
       price: 0,
       category: '',
     },
+    search: false,
     searchTerms: '',
     selectedBooks: [],
   }
@@ -71,12 +72,14 @@ class App extends Component {
     console.log(`content è: ${JSON.stringify(content)}`) // Per verificare
   }
 
-  setSearchTerms = (terms) => {
+  setSearchTerms = (terms, search) => {
     this.setState({
       ...this.state,
-      searchTerms: terms
+      searchTerms: terms,
+      search: search,
     })
     console.log(`setSearchTerms searchTerms è : ${terms}`) // Per verificare
+    console.log(`setSearchTerms search è : ${search}`) // Per verificare
   }
 
   setSelectedBooks = (asin) => {
@@ -115,6 +118,7 @@ class App extends Component {
             booksArray={booksArray}
             category={this.state.bookFilter}
             searchTerms={this.state.searchTerms}
+            search={this.state.search}
             setSearchTerms={this.setSearchTerms}
             setModalShow={this.setModalShow}
             selectedBooks={this.state.selectedBooks}

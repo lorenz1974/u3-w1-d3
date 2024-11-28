@@ -29,13 +29,13 @@ class SingleBook extends React.Component {
             <Card.Text className='d-flex py-0 m-0 mt-2 justify-content-end fs-4 '>
               <span className='fw-bold'>€ {book.price}</span>
             </Card.Text>
-            <Card.Footer className='d-flex py-0 text-center'>
-              <Button variant={'success'} className='mx-auto  my-2 shadow'>
+            <Card.Footer className='d-flex py-0 justify-content-center'>
+              <Button variant={'success'} className='m-2 shadow'>
                 Compra
               </Button>
               <Button
-                variant={'primary'}
-                className='mx-auto  my-2 shadow'
+                variant={'warning'}
+                className='m-2 shadow'
                 onClick={() => {
                   setModalShow(true, {
                     asin: book.asin,

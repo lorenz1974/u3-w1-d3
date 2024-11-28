@@ -5,7 +5,7 @@ function formOnSubmit(e, setSearchTerms) {
   console.log('Form submitted')
   const searchValue = e.target.form[0].value // Valore dell'input
   console.log('Search value:', searchValue)
-  setSearchTerms(searchValue)
+  setSearchTerms(searchValue, true)
 }
 
 function MySearch(props) {
@@ -20,12 +20,14 @@ function MySearch(props) {
               type='text'
               placeholder='Search...'
               value={props.searchTerms}
-              onChange={(e) => props.setSearchTerms(e.target.value)}
+              onChange={(e) => {
+                props.setSearchTerms(e.target.value, false)
+              }}
             />
           </Form.Group>
           <Button
             className='ms-2'
-            variant='success'
+            variant='primary'
             type='submit'
             onClick={(e) => formOnSubmit(e, props.setSearchTerms)}
           >
@@ -37,7 +39,7 @@ function MySearch(props) {
               variant='warning'
               onClick={() => {
                 console.log('Reset search terms')
-                props.setSearchTerms('')
+                props.setSearchTerms('', false)
               }}
             >
               Reset

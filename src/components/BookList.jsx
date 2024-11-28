@@ -9,7 +9,7 @@ function BookList(props) {
         .filter((book) => {
           // Devo fare una verifica se searchTerms contiene qualcosa perché se è uguale a ''
           // vengono estratti tutti i libri perché '' è sempre contenuto in ogni stringa
-          if (props.searchTerms) {
+          if (props.searchTerms && props.search) {
             return (
               book.title
                 .toLowerCase()
